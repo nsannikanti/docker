@@ -15,11 +15,15 @@ pipeline {
         }
          stage('docker-push') {
             steps { 
-                sh "docker push nsannika/mineimages/web:4.0"
+            //  sh "docker push nsannika/mineimages/web:4.0"
             //   withCredentials([string(credentialsId: 'dockerpassword', variable: 'dockerpass')]) {
             //         sh 'docker login -u "devopsjuly22017" -p "${dockerpass}"'
             //         sh "docker push devopsjuly22017/web:4.0"
             //   }
+                withCredentials([string(credentialsId: 'dockerpass', variable: 'dockerpassword')]) {
+                        sh 'docker login -u "nsannika" -p "${dockerpassword}"'
+                        sh "docker push nsannika/mineimages/web:4.0"
+                }
             }     
         }
     }
