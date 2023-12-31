@@ -12,7 +12,7 @@ pipeline {
                sh "sudo chown ubuntu:ubuntu /var/run/docker.sock"
                sh "docker build -t web ."
                sh "docker tag web nsannika/web:4.0"
-               sh "docker tag web:4.0 109387072744.dkr.ecr.ap-south-1.amazonaws.com/web:4.0"
+               sh "docker tag web:latest 109387072744.dkr.ecr.ap-south-1.amazonaws.com/web:4.0"
             }     
         }
          stage('docker-push') {
