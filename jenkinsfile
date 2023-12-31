@@ -9,8 +9,9 @@ pipeline {
         }
         stage('docker-build') {
             steps {
+               sh "sudo chown ubuntu:ubuntu /var/run/docker.sock"
                sh "docker build -t web ."
-               sh "docker tag web nsannika/mineimages/web:4.0"
+               sh "docker tag web nsannika/web:4.0"
             }     
         }
          stage('docker-push') {
@@ -22,7 +23,7 @@ pipeline {
             //   }
                 withCredentials([string(credentialsId: 'dockerpass', variable: 'dockerpassword')]) {
                         sh 'docker login -u "nsannika" -p "${dockerpassword}"'
-                        sh "docker push nsannika/mineimages/web:4.0"
+                        sh "docker push nsannika/web:4.0"
                 }
             }     
         }
