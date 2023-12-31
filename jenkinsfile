@@ -24,12 +24,17 @@ pipeline {
             }     
         }
         stage('ecr-push') {
-           steps { 
-                withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]) {
-                        sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 109387072744.dkr.ecr.ap-south-1.amazonaws.com"
-                        sh "docker push 109387072744.dkr.ecr.ap-south-1.amazonaws.com/web:4.0"
+            steps { 
+                withCredentials([[
+                $class: 'AmazonWebServicesCredentialsBinding',
+                credentialsId: "awscredentials",
+                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                ]]) {					  
+					  sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 109387072744.dkr.ecr.ap-south-1.amazonaws.com"
+                      sh "docker push 109387072744.dkr.ecr.ap-south-1.amazonaws.com/web:4.0"
                 }
-            }
+            }     
         }
     }
 }
